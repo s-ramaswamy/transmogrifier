@@ -20,16 +20,25 @@ def register(request):
             # TODO: cleaning of caterer
             
             # Update the UserProfile with the feedback and choice of caterer
-            user = form.cleaned_data['user']
-            user.profile.feedback = form.cleaned_data['feedback']
-            user.profile.choice_of_caterer = get_caterer_id(
-                form.cleaned_data['choice_of_caterer']
-            )
-            user.profile.save()
+            data = form.cleaned_data
+            if 'username' in data and 'password' in data:
+                try:
+                    # Try to get user and profile (authorization)
+                    user = User.objects.select_related('profile').get(username= data['username'])
+                    # Check password (authentication)
+                    if not user.check_password(data['password']):
+                        raise User.DoesNotExist
+                except (User.DoesNotExist, UserProfile.DoesNotExist):
+                    raise forms.ValidationError("This username and password"
+                                            "combination does not exist")
+                # Add this user and profile object to cleaned_data to avoid
+                # hitting the database again
+                user.profile.feedback = data['feedback']
+                user.profile.choice_of_caterer_id = int(get_caterer_id(data['choice_of_caterer']))
+                user.profile.save()
             
-            return redirect('registration_success', get_caterer_name(
-                form.cleaned_data['choice_of_caterer']
-            ))
+                return redirect('registration_success', get_caterer_name(
+                    data['choice_of_caterer']))
     else:
         form = RegistrationForm()
     

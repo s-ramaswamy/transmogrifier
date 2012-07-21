@@ -34,7 +34,7 @@ class UserProfile(models.Model):
     choice_of_caterer = models.ForeignKey(Caterer, related_name = 'students')
     
     def __unicode__(self):
-        return unicode(user)
+        return unicode(self.user)
 
 
 CATERER_ID_MANGLER = u'|'
@@ -56,6 +56,7 @@ def get_list_of_caterers():
             mangled_caterer_id = unicode(caterer.id) + CATERER_ID_MANGLER + \
                                  unicode(caterer.name)
             list_of_caterers.append( (mangled_caterer_id, caterer.name) )
+    print list_of_caterers        
     return list_of_caterers
 
 
