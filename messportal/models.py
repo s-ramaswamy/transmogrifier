@@ -1,6 +1,19 @@
 from django.db                      import models
 from django.contrib.auth.models     import User
 
+class Caterer(models.Model):
+    """
+    Model to contain caterer information. Records of this table make up the 
+    choices for users to select from.
+    """
+    name = models.CharField(max_length = 100)
+    limit = models.IntegerField()
+    # 'students' is a related field - FK from UserProfile
+    
+    def __unicode__(self):
+        return unicode(self.name)
+
+
 class UserProfile(models.Model):
     """
     Model to contain feedback information of previous mess experience.
@@ -22,19 +35,6 @@ class UserProfile(models.Model):
     
     def __unicode__(self):
         return unicode(user)
-
-
-class Caterer(models.Model):
-    """
-    Model to contain caterer information. Records of this table make up the 
-    choices for users to select from.
-    """
-    name = models.CharField(max_length = 100)
-    limit = models.IntegerField()
-    # 'students' is a related field - FK from UserProfile
-    
-    def __unicode__(self):
-        return unicode(self.name)
 
 
 CATERER_ID_MANGLER = u'|'
