@@ -37,6 +37,9 @@ class Caterer(models.Model):
         return unicode(self.name)
 
 
+CATERER_ID_MANGLER = u'|'
+
+
 def get_list_of_caterers():
     """
     Returns a list of caterers for the current implementaton.
@@ -47,5 +50,27 @@ def get_list_of_caterers():
     for caterer in Caterer.objects.all():
         # Check if number of students registered already is less than limit
         if caterer.limit > caterer.students.count():
-            list_of_caterers.append(caterer)
+            # Mangle the name and id of the caterer into a single string
+            # so that the view can later use both without having to query
+            # the database
+            mangled_caterer_id = unicode(caterer.id) + CATERER_ID_MANGLER + \
+                                 unicode(caterer.name)
+            list_of_caterers.append( (mangled_caterer_id, caterer.name) )
     return list_of_caterers
+
+
+def get_caterer_id(mangled_caterer_id):
+    """
+    Unmangles the caterer-id-and-name and returns the id alone.
+    """
+    
+    return mangled_caterer_id.split(CATERER_ID_MANGLER)[0]
+
+
+def get_caterer_name(mangled_caterer_id):
+    """
+    Unmangles the caterer-id-and-name and returns the name alone.
+    """
+    
+    return mangled_caterer_id.split(CATERER_ID_MANGLER)[1]
+
