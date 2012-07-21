@@ -3,7 +3,7 @@ from django.shortcuts               import render_to_response, redirect
 from django.contrib.auth.models     import User
 from django.contrib.auth.decorators import login_required
 
-from messportal.models  import UserProfile, get_object_from_choice
+from messportal.models  import UserProfile
 from messportal.models  import get_caterer_id, get_caterer_name
 from messportal.forms   import RegistrationForm
 
