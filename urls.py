@@ -1,3 +1,16 @@
-from messportal.urls import urlpatterns as messportal_urlpatterns
+from django.conf.urls.defaults import patterns, url, include
+from django.contrib            import admin
+from messportal import urls
 
-urlpatterns = messportal_urlpatterns
+admin.autodiscover()
+
+urlpatterns = patterns('',
+
+        url(r'^admin/',
+            include(admin.site.urls)
+            ),
+
+        url(r'^',
+            include('transmogrifier.messportal.urls')
+            ),
+        )

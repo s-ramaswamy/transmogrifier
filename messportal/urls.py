@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import patterns, url
 
-urlpatterns = patterns('Transmogrifier.messportal.views',
+urlpatterns = patterns('transmogrifier.messportal.views',
     # Form to register for a mess caterer
     url(
         r'^register/$',
