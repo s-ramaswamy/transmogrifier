@@ -20,3 +20,36 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return unicode(user)
 
+class AbstractMessTuple(models.Model):
+    """
+    Abstract mess model from which all the different messes inherit.
+    """
+    user = models.ForeignKey(User, related_name = 'choice')
+
+    def __unicode__(self):
+        return unicode(self.user.username)
+
+class Cauvery(AbstractMessTuple):
+    """
+    Cauvery
+    """
+class Krishna(AbstractMessTuple):
+    """
+    Krishna
+    """
+class HimalayaGF(AbstractMessTuple):
+    """
+    Himalaya Ground Floor
+    """
+class Himalaya1F(AbstractMessTuple):
+    """
+    Himalaya First Floor
+    """
+class Himalaya2F(AbstractMessTuple):
+    """
+    Himalays Second Floor
+    """
+class Mandakini(AbstractMessTuple):
+    """
+    Mandakini
+    """
