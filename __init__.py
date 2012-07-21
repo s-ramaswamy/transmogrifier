@@ -1,2 +1,2 @@
 import os
-os.environ['DJANGO_SETTINGS_MODULE'] = 'Transmogrifier.settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'transmogrifier.settings'
