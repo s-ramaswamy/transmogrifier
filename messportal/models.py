@@ -5,7 +5,8 @@ class UserProfile(models.Model):
     """
     Model to contain feedback information of previous mess experience.
     """
-    user = models.ForeignKey(User)
+    # This must be 1-2-1 and not FK so that select_related works in the form
+    user = models.OneToOneField(User, related_name = 'profile')
     
     # Rating for each feedback field is encoded into a single integer field
     # For example:
