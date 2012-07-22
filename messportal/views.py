@@ -2,11 +2,13 @@ from django.template                import RequestContext
 from django.shortcuts               import render_to_response, redirect
 from django.contrib.auth.models     import User
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf   import csrf_exempt
 
 from messportal.models  import UserProfile
 from messportal.models  import get_caterer_id, get_caterer_name
 from messportal.forms   import RegistrationForm
 
+@csrf_exempt
 def register(request):
     """
     View to deal with mess registration by users.
@@ -43,8 +45,8 @@ def register(request):
         form = RegistrationForm()
     
     context = { 'form': form, }
-    return render_to_response('messportal/register.html', context, 
-                              context_instance = RequestContext(request))
+    # Purposely not using RequestContext here, because it pings the db.
+    return render_to_response('messportal/register.html', context)
 
 
 def registration_success(request, caterer):
@@ -53,6 +55,6 @@ def registration_success(request, caterer):
     """
     
     context = { 'caterer': caterer, }
-    return render_to_response('messportal/registration_success.html', context,
-                              context_instance = RequestContext(request))
+    # Purposely not using RequestContext here, because it pings the db.
+    return render_to_response('messportal/registration_success.html', context)
 

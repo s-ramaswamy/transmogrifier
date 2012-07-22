@@ -5,7 +5,7 @@
 <div class="span12">
 
     <form action="" method="POST">
-        {% csrf_token %}
+        {% comment %} CSRF is not being used in this form {% endcomment %}
         <table>
             {{ form }}
         </table>
