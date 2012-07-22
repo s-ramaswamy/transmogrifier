@@ -7,7 +7,7 @@ class Caterer(models.Model):
     choices for users to select from.
     """
     name = models.CharField(max_length = 100)
-    limit = models.IntegerField()
+    limit = models.IntegerField(db_index = True)
     # 'students' is a related field - FK from UserProfile
     
     def __unicode__(self):

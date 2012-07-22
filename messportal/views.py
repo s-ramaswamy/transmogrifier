@@ -33,7 +33,7 @@ def register(request):
                                             "combination does not exist")
                 # Add this user and profile object to cleaned_data to avoid
                 # hitting the database again
-                user.profile.feedback = data['feedback']
+                user.profile.feedback = int(data['feedback_hygeine']+data['feedback_quality']+data['feedback_quantity'])
                 user.profile.choice_of_caterer_id = int(get_caterer_id(data['choice_of_caterer']))
                 user.profile.save()
             
