@@ -8,5 +8,5 @@ admin.site.register(Krishna)
 admin.site.register(HimalayaGF)
 admin.site.register(Himalaya1F)
 admin.site.register(Himalaya2F)
-admin.site.regsiter(Mandakini)
+admin.site.register(Mandakini)
 

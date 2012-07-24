@@ -2,7 +2,7 @@ from django                     import forms
 from django.contrib.auth.models import User
 from django.utils.safestring    import mark_safe
 
-from messportal.models      import UserProfile, get_list_of_caterers
+from messportal.models      import UserProfile
 
 FEEDBACK_CHOICES = (('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),)
 MESS_CHOICES = (('Cauvery','Cauvery'),('Krishna','Krishna'),('HimalayaGF','HimalayaGF'),('Himalaya1F','Himalaya1F'),('Himalaya2F','Himalaya2F'),('Mandakini','Mandakini'),)
