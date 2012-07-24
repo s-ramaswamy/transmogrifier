@@ -24,10 +24,15 @@ class AbstractMessTuple(models.Model):
     """
     Abstract mess model from which all the different messes inherit.
     """
-    user = models.ForeignKey(User, related_name = 'choice', unique = True)
+    # related_name must be unique on the other side.
+    # Refer django docs on abstract model inheritance for more info
+    user = models.ForeignKey(User, related_name = '%(class)s_choice')
 
     def __unicode__(self):
         return unicode(self.user.username)
+
+    class Meta:
+        abstract = True
 
 class Cauvery(AbstractMessTuple):
     """
