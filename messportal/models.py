@@ -16,15 +16,15 @@ class UserProfile(models.Model):
     #       Overall   - 3
     # will be encoded as 3433
     feedback = models.IntegerField(blank = False, null = True)
-    
+    registered = models.BooleanField(default = False) 
     def __unicode__(self):
-        return unicode(user)
+        return unicode(self.user)
 
 class AbstractMessTuple(models.Model):
     """
     Abstract mess model from which all the different messes inherit.
     """
-    user = models.ForeignKey(User, related_name = 'choice')
+    user = models.ForeignKey(User, related_name = 'choice', unique = True)
 
     def __unicode__(self):
         return unicode(self.user.username)
