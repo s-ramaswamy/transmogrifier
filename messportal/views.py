@@ -33,38 +33,43 @@ def register(request):
             if 'username' in data and 'password' in data:
                 try:
                     # Try to get user and profile (authorization)
-                    user = User.objects.select_related('profile').get(username= data['username'])
+                    user = User.objects.select_related('profile').get(
+                               username= data['username']
+                           )
                     # Check password (authentication)
                     if not user.check_password(data['password']):
                         raise User.DoesNotExist
                 except (User.DoesNotExist, UserProfile.DoesNotExist):
                     raise forms.ValidationError("This username and password"
-                                            "combination does not exist")
+                                                "combination does not exist")
                 # Add this user and profile object to cleaned_data to avoid
                 # hitting the database again
                 if user.profile.registered == True:
-                    raise forms.ValidationError("You have already registered. You cannot register again")
-                user.profile.feedback = int(data['feedback_hygeine']+data['feedback_quality']+data['feedback_quantity'])
+                    raise forms.ValidationError("You have already registered."
+                                                " You cannot register again"  )
+                user.profile.feedback = int( data['feedback_hygeine'] +
+                                             data['feedback_quality'] +
+                                             data['feedback_quantity']  )
                 
                 if 'choice_of_caterer' in data:
-
-                    caterer = eval(data['choice_of_caterer'])
-                    limit = eval(data['choice_of_caterer']+'_LIMIT')
+                    caterer = eval( data['choice_of_caterer'] )
+                    limit = eval( data['choice_of_caterer'] + '_LIMIT' )
                     if caterer.objects.count() < limit:
-
                         caterer_object = caterer(user=user)
                         caterer_object.save()
                         user.profile.registered = True
                         user.profile.save()
-                        return redirect('registration_success', data['choice_of_caterer'])
+                        return redirect( 'registration_success', 
+                                         data['choice_of_caterer'] )
                     else:
-                        raise forms.ValidationError("This mess has already reached its limit")
+                        raise forms.ValidationError("This mess has already "
+                                                    "reached its limit"     )
     else:
         form = RegistrationForm()
     
     context = { 'form': form, }
-    # Purposely not using RequestContext here, because it pings the db.
-    return render_to_response('messportal/register.html', context)
+    return render_to_response('messportal/register.html', context,
+                              context_instance = RequestContext(request))
 
 def registration_success(request, caterer):
     """
@@ -73,5 +78,6 @@ def registration_success(request, caterer):
     
     context = { 'caterer': caterer, }
     # Purposely not using RequestContext here, because it pings the db.
-    return render_to_response('messportal/registration_success.html', context)
+    return render_to_response('messportal/registration_success.html', context,
+                              context_instance = RequestContext(request)      )
 
