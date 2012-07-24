@@ -47,3 +47,12 @@ def register(request):
     # Purposely not using RequestContext here, because it pings the db.
     return render_to_response('messportal/register.html', context)
 
+def registration_success(request, caterer):
+    """
+    View to give a success message after registration is complete.
+    """
+    
+    context = { 'caterer': caterer, }
+    # Purposely not using RequestContext here, because it pings the db.
+    return render_to_response('messportal/registration_success.html', context)
+
