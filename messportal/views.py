@@ -45,8 +45,8 @@ def register(request):
         form = RegistrationForm()
     
     context = { 'form': form, }
-    # Purposely not using RequestContext here, because it pings the db.
-    return render_to_response('messportal/register.html', context)
+    return render_to_response('messportal/register.html', context,
+                              context_instance = RequestContext(request))
 
 
 def registration_success(request, caterer):
@@ -56,5 +56,6 @@ def registration_success(request, caterer):
     
     context = { 'caterer': caterer, }
     # Purposely not using RequestContext here, because it pings the db.
-    return render_to_response('messportal/registration_success.html', context)
+    return render_to_response('messportal/registration_success.html', context,
+                              context_instance = RequestContext(request))
 
