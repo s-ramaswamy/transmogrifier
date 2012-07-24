@@ -1,7 +1,19 @@
 from django                     import forms
 from django.contrib.auth.models import User
+from django.utils.safestring    import mark_safe
 
 from messportal.models      import UserProfile, get_list_of_caterers
+
+FEEDBACK_CHOICES = (('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),)
+MESS_CHOICES = (('Cauvery','Cauvery'),('Krishna','Krishna'),('HimalayaGF','HimalayaGF'),('Himalaya1F','Himalaya1F'),('Himalaya2F','Himalaya2F'),('Mandakini','Mandakini'),)
+class HorizontalRadioRenderer(forms.RadioSelect.renderer):
+    def render(self):
+        return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
+
+
+class HorizontalRadioSelect(forms.RadioSelect):
+    renderer = HorizontalRadioRenderer
+
 
 class RegistrationForm(forms.Form):
     """
@@ -14,32 +26,9 @@ class RegistrationForm(forms.Form):
     
     # Feedback
     # Javascript will do the job of encoding
-    feedback = forms.IntegerField()
-    
-    # New choice
-    choice_of_caterer = forms.ChoiceField(choices = get_list_of_caterers())
-    
-    def clean(self):
-        """
-        Perform validation of username and password.
-        """
-        data = self.cleaned_data
-        if 'username' in data and 'password' in data:
-            try:
-                # Try to get user and profile (authorization)
-                user = User.objects.select_related(
-                                        'profile'
-                                    ).get(
-                                        username = data['username']
-                                    )
-                # Check password (authentication)
-                if not user.check_password(data['password']):
-                    raise User.DoesNotExist
-            except (User.DoesNotExist, UserProfile.DoesNotExist):
-                raise forms.ValidationError("This username and password"
-                                            "combination does not exist")
-            # Add this user and profile object to cleaned_data to avoid
-            # hitting the database again
-            self.cleaned_data['user'] = user
-    
-    # Cleaning of remaining fields will be carried out in the view
+    feedback_hygeine = forms.CharField(widget = HorizontalRadioSelect(choices = FEEDBACK_CHOICES))
+    feedback_quality = forms.CharField(widget = HorizontalRadioSelect(choices = FEEDBACK_CHOICES))
+    feedback_quantity = forms.CharField(widget = HorizontalRadioSelect(choices = FEEDBACK_CHOICES))
+    #New choice
+    choice_of_caterer = forms.ChoiceField(choices = MESS_CHOICES, widget=forms.RadioSelect)
+
