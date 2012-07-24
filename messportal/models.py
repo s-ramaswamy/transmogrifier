@@ -53,3 +53,11 @@ class Mandakini(AbstractMessTuple):
     """
     Mandakini
     """
+
+Cauvery_LIMIT = 10
+Krishna_LIMIT = 10
+HimalayaGF_LIMIT = 10
+Himalaya1F_LIMIT = 10
+Himalaya2F_LIMIT = 10
+Mandakini_LIMIT = 10
+
