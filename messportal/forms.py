@@ -1,9 +1,10 @@
 from django                     import forms
 from django.contrib.auth.models import User
 from django.utils.safestring    import mark_safe
+from django.db.models.base      import ModelBase
 
-from messportal                 import models
-from messportal.models          import UserProfile
+from transmogrifier.messportal          import models
+from transmogrifier.messportal.models   import UserProfile, AbstractMessTuple
 
 FEEDBACK_CHOICES = (('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),)
 
@@ -15,6 +16,21 @@ MESS_CHOICES = (
     ('Himalaya2F','Himalaya2F'),
     ('Mandakini','Mandakini'),
 )
+
+def get_list_of_caterers():
+    list_of_caterers = []
+    for obj in models.__dict__.values():
+        if not isinstance(obj, ModelBase):
+            continue
+        if obj.__base__ != AbstractMessTuple:
+            continue
+        if obj == AbstractMessTuple:
+            continue
+        Model = obj
+        limit = getattr(models, Model.__name__+'_LIMIT')
+        if Model.objects.count() < limit:
+            list_of_caterers.append((Model.__name__, Model.__name__))
+    return list_of_caterers
 
 class HorizontalRadioRenderer(forms.RadioSelect.renderer):
     def render(self):
@@ -40,7 +56,7 @@ class RegistrationForm(forms.Form):
     feedback_quantity = forms.CharField(widget = HorizontalRadioSelect(
                                                  choices = FEEDBACK_CHOICES))
     #New choice
-    choice_of_caterer = forms.ChoiceField(choices = MESS_CHOICES, 
+    choice_of_caterer = forms.ChoiceField(choices = get_list_of_caterers(), 
                                           widget=forms.RadioSelect)
 
     def clean(self):
